@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AddressBookServiceImpl implements AddressBookService {
-
+//Autowired
 private AddressBookRepository addressBookRepository;
 
     public AddressBookServiceImpl(AddressBookRepository addressBookRepository) {
@@ -17,6 +17,6 @@ private AddressBookRepository addressBookRepository;
 
     @Override
     public AddressBook saveAddressBook(AddressBook addressBook) {
-        return null;
+        return addressBookRepository.save(addressBook);
     }
 }
