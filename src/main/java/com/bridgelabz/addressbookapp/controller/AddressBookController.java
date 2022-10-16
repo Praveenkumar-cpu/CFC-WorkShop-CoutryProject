@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 //@restcontroller is concenient that combines @Controller and @ResponseBody
 //it eliminate need of @Reqbody for every req method
 
@@ -26,9 +28,40 @@ public class AddressBookController {
     // we can provide complete resposonse to this class
     // create record with post method
     @PostMapping()
-    public ResponseEntity<AddressBook> saveAddressBook(@RequestBody AddressBook addressBook){
+    public ResponseEntity<AddressBook> saveAddressBook(@RequestBody AddressBook addressBook) {
         return new ResponseEntity<AddressBook>(addressBookService.saveAddressBook(addressBook), HttpStatus.CREATED);
+    }
+
+    //get all address REST API
+    @GetMapping
+    public List<AddressBook> getAllAddressDetails() {
+        return addressBookService.getAllDetails();
+    }
+
+    //get by id
+    @GetMapping("{id}")
+    public ResponseEntity<AddressBook> getAddressBookpinCode(@PathVariable("id") long pinCode) {
+
+        return new ResponseEntity<AddressBook>(addressBookService.getAddressByPinCode(pinCode),HttpStatus.OK);
+    }
+
+    //update rest api
+    //http://loalhost:8080/api/addressbook/2
+    @PutMapping("{id}")
+    public ResponseEntity<AddressBook>updateAddressBook(@PathVariable("id")long pinCode,@RequestBody AddressBook addressBook){
+
+        return new ResponseEntity<AddressBook>(addressBookService.updateAddressBook(addressBook,pinCode),HttpStatus.OK);
+
+    }
+
+    //build delete Addressbook
+@DeleteMapping("{id}")
+    public ResponseEntity<String> deleteAddressBook(@PathVariable("id") long pinCode){
+       addressBookService.deleteAddressBook(pinCode);
+       return new ResponseEntity<String>("Address Book deleted successfully",HttpStatus.OK);
+
+    }
 
 
-    };
+
 }
