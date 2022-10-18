@@ -60,8 +60,7 @@ public class AddressBookController {
        addressBookService.deleteAddressBook(pinCode);
        return new ResponseEntity<String>("Address Book deleted successfully",HttpStatus.OK);
 
+
     }
-
-
 
 }
