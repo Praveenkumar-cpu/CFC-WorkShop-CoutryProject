@@ -7,10 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 //@restcontroller is concenient that combines @Controller and @ResponseBody
-//it eliminate need of @Reqbody for every req method
+//it Eliminate need of @Reqbody for every req method
 
 
 @RestController
@@ -27,8 +28,8 @@ public class AddressBookController {
     // build create AddressBook Rest API
     // we can provide complete resposonse to this class
     // create record with post method
-    @PostMapping()
-    public ResponseEntity<AddressBook> saveAddressBook(@RequestBody AddressBook addressBook) {
+    @PostMapping("/post")
+    public ResponseEntity<AddressBook> saveAddressBook(@Valid @RequestBody AddressBook addressBook) {
         return new ResponseEntity<AddressBook>(addressBookService.saveAddressBook(addressBook), HttpStatus.CREATED);
     }
 
@@ -48,7 +49,7 @@ public class AddressBookController {
     //update rest api
     //http://loalhost:8080/api/addressbook/2
     @PutMapping("{id}")
-    public ResponseEntity<AddressBook>updateAddressBook(@PathVariable("id")long pinCode,@RequestBody AddressBook addressBook){
+    public ResponseEntity<AddressBook>updateAddressBook(@Valid @PathVariable("id")long pinCode,@RequestBody AddressBook addressBook){
 
         return new ResponseEntity<AddressBook>(addressBookService.updateAddressBook(addressBook,pinCode),HttpStatus.OK);
 

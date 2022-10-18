@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 @Data
 @Entity
@@ -15,6 +16,7 @@ public class AddressBook {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long pinCode;
 
+    @Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]{2,}$]",message = "Name Should Starts With Capital")
     @NotEmpty(message = "Name Should Not Empty")
     @Min(value = 20,message = "write minimum number")
     @Column(name = "first_name",nullable = false)
