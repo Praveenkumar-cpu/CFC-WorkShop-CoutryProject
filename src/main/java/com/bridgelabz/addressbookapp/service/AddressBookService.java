@@ -1,18 +1,52 @@
 package com.bridgelabz.addressbookapp.service;
 
-import com.bridgelabz.addressbookapp.model.AddressBook;
+import com.bridgelabz.addressbookapp.dto.AddressBookDTO;
+import com.bridgelabz.addressbookapp.exception.AddressBookException;
+import com.bridgelabz.addressbookapp.model.AddressBookData;
+import com.bridgelabz.addressbookapp.repository.AddressBookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface AddressBookService {
+@Service
+public class AddressBookService implements IAddressBookService{
 
-    AddressBook saveAddressBook(AddressBook addressBook);
-    List<AddressBook> getAllDetails();
-    AddressBook getAddressByPinCode(long pinCode);
+    @Autowired
+    AddressBookData addressBookData;
+    @Autowired
+   private AddressBookRepository addressBookRepository;
 
-    AddressBook updateAddressBook(AddressBook addressBook,long pincode);
+    @Override
+    public List<AddressBookData> getAddressBookData() {
+        return addressBookRepository.findAll();
+    }
 
-    void deleteAddressBook(long pincode);
+    @Override
+    public AddressBookData getAddressBookById(int id) {
+        return addressBookRepository.findById(id).orElseThrow(()-> new AddressBookException("AddressBook With the id " + id + "does Not Exists"));
+    }
+
+    @Override
+    public AddressBookData addAddressBookData(AddressBookDTO addressBookDTO) {
+        addressBookData = new AddressBookData(addressBookDTO);
+        return addressBookRepository.save(addressBookData);
+    }
+
+    @Override
+    public AddressBookData updateAddressBookByFirstName(int id, AddressBookDTO addressBookDTO) {
+        addressBookData = this.getAddressBookById(id);
+        addressBookData.updateAddressBookData(addressBookDTO);
+        return addressBookRepository.save(addressBookData);
+
+    }
+
+    @Override
+    public void deleteAddressBookByFirstName(int id) {
+        addressBookData = this.getAddressBookById(id);
+        addressBookRepository.delete(addressBookData);
+
+    }
 
 
 }

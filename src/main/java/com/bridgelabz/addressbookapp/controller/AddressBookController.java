@@ -1,67 +1,65 @@
 package com.bridgelabz.addressbookapp.controller;
 
-import com.bridgelabz.addressbookapp.model.AddressBook;
+import com.bridgelabz.addressbookapp.dto.AddressBookDTO;
+import com.bridgelabz.addressbookapp.dto.ResponseDTO;
+import com.bridgelabz.addressbookapp.model.AddressBookData;
 import com.bridgelabz.addressbookapp.service.AddressBookService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-//@restcontroller is concenient that combines @Controller and @ResponseBody
-//it Eliminate need of @Reqbody for every req method
-
-
 @RestController
-@RequestMapping("/api/addressbook")
+@RequestMapping("/home")
 public class AddressBookController {
 
+    @Autowired
+    private ResponseDTO responseDTO;
+
+   @Autowired
     private AddressBookService addressBookService;
 
-    public AddressBookController(AddressBookService addressBookService) {
-        super();
-        this.addressBookService = addressBookService;
+    @GetMapping(value = {"","/","getall"})
+    public ResponseEntity<ResponseDTO> getAddressBookData(){
+        List<AddressBookData> addressBookDataList = addressBookService.getAddressBookData();
+        responseDTO = new ResponseDTO("Get call success",addressBookDataList);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    // build create AddressBook Rest API
-    // we can provide complete resposonse to this class
-    // create record with post method
-    @PostMapping("/post")
-    public ResponseEntity<AddressBook> saveAddressBook(@Valid @RequestBody AddressBook addressBook) {
-        return new ResponseEntity<AddressBook>(addressBookService.saveAddressBook(addressBook), HttpStatus.CREATED);
+    @GetMapping("/getid/{id}")
+    public ResponseEntity<ResponseDTO>getAddressBookById(@PathVariable("id") int id){
+        AddressBookData addressBookData = addressBookService.getAddressBookById(id);
+        responseDTO = new ResponseDTO("Get Call for ID success",addressBookData);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
-    //get all address REST API
-    @GetMapping
-    public List<AddressBook> getAllAddressDetails() {
-        return addressBookService.getAllDetails();
-    }
 
-    //get by id
-    @GetMapping("{id}")
-    public ResponseEntity<AddressBook> getAddressBookpinCode(@PathVariable("id") long pinCode) {
-
-        return new ResponseEntity<AddressBook>(addressBookService.getAddressByPinCode(pinCode),HttpStatus.OK);
-    }
-
-    //update rest api
-    //http://loalhost:8080/api/addressbook/2
-    @PutMapping("{id}")
-    public ResponseEntity<AddressBook>updateAddressBook(@Valid @PathVariable("id")long pinCode,@RequestBody AddressBook addressBook){
-
-        return new ResponseEntity<AddressBook>(addressBookService.updateAddressBook(addressBook,pinCode),HttpStatus.OK);
+    @PostMapping("/add")
+    public ResponseEntity<ResponseDTO>addAddressBook(@Valid @RequestBody AddressBookDTO addressBookDTO){
+        AddressBookData addressBookData = addressBookService.addAddressBookData(addressBookDTO);
+        responseDTO = new ResponseDTO("Data Added Successfully",addressBookData);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
 
     }
-
-    //build delete Addressbook
-@DeleteMapping("{id}")
-    public ResponseEntity<String> deleteAddressBook(@PathVariable("id") long pinCode){
-       addressBookService.deleteAddressBook(pinCode);
-       return new ResponseEntity<String>("Address Book deleted successfully",HttpStatus.OK);
-
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ResponseDTO>updateAddressBookData(@Valid @PathVariable("id") int id, @RequestBody AddressBookDTO addressBookDTO){
+    AddressBookData addressBookData = addressBookService.updateAddressBookByFirstName(id,addressBookDTO);
+    responseDTO = new ResponseDTO("Address Book Updated successfully",addressBookData);
+    return new ResponseEntity<>(responseDTO,HttpStatus.OK);
 
     }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseDTO> deleteAddressBookData(@PathVariable("id") int id){
+        addressBookService.deleteAddressBookByFirstName(id);
+        responseDTO = new ResponseDTO("Deleted Successfully",id);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
+
+
+
 
 }
