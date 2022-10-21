@@ -58,6 +58,19 @@ public class AddressBookController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
+    @GetMapping("/getbyname/{firstname}")
+    public ResponseEntity<ResponseDTO> getAddressBookData(@PathVariable("firstname") String firstname) {
+        List<AddressBookData> addressBookData = addressBookService.findAddressBookByFirstName(firstname);
+        ResponseDTO responseDTO = new ResponseDTO("Get call for firstname is successfull", addressBookData);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/getbystate/{state}")
+    public ResponseEntity<ResponseDTO> getAddressBookDataByState(@PathVariable("state") String state) {
+        List<AddressBookData> addressBookData = addressBookService.findAddressBookByState(state);
+        ResponseDTO responseDTO = new ResponseDTO("Get call for State is successfull", addressBookData);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 
 
 

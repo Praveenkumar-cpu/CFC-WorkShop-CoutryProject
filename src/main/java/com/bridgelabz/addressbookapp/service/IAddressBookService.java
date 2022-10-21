@@ -17,5 +17,8 @@ public interface IAddressBookService {
 
     void deleteAddressBookByFirstName(int id);
 
+    List<AddressBookData> findAddressBookByFirstName(String firstname);
+    List<AddressBookData> findAddressBookByState(String state);
+
 
 }

@@ -48,5 +48,15 @@ public class AddressBookService implements IAddressBookService{
 
     }
 
+    @Override
+    public List<AddressBookData> findAddressBookByFirstName(String firstname) {
+        return addressBookRepository.findAddressBookDataByFirstname(firstname);
+    }
+
+    @Override
+    public List<AddressBookData> findAddressBookByState(String state) {
+        return addressBookRepository.findAddressBookDataByState(state);
+    }
+
 
 }
