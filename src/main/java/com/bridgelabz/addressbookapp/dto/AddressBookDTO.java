@@ -9,6 +9,11 @@ import lombok.ToString;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+//Data transfer Object
+//It is design pattern
+//it hides details present in Entity
+//it is close to entity it help to secure data
+
 @Data
 @ToString
 @NoArgsConstructor
@@ -19,9 +24,8 @@ public class AddressBookDTO {
 
     @NotEmpty(message = "FirstName CanNot be Null")
     @Pattern(regexp = "^[A-Z][a-z\\s]{2,}$",message = "First Name Should Starts With Capital Letter")
+
     private String firstName;
-
-
     private String lastName;
     private String email;
     private String phoneNumber;

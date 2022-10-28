@@ -1,5 +1,4 @@
 package com.bridgelabz.addressbookapp.controller;
-
 import com.bridgelabz.addressbookapp.dto.AddressBookDTO;
 import com.bridgelabz.addressbookapp.dto.ResponseDTO;
 import com.bridgelabz.addressbookapp.model.AddressBookData;
@@ -15,12 +14,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/home")
 public class AddressBookController {
-
     @Autowired
     private ResponseDTO responseDTO;
 
    @Autowired
     private AddressBookService addressBookService;
+
 
     @GetMapping(value = {"","/","getall"})
     public ResponseEntity<ResponseDTO> getAddressBookData(){
@@ -71,8 +70,6 @@ public class AddressBookController {
         ResponseDTO responseDTO = new ResponseDTO("Get call for State is successfull", addressBookData);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
-
-
 
 
 }
